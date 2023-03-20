@@ -1,0 +1,20 @@
+.content {
+  display: grid;
+  grid-template-rows: min-content 1fr;
+  gap: 52px;
+}
+.task {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+.input {
+  max-width: 377px;
+}
+.decision {
+  display: flex;
+  justify-content: center;
+}
+.button_clean {
+  margin-left: 80px;
+}
