@@ -5,7 +5,7 @@ import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
-import { DELAY_IN_MS } from "../../constants/delays"; //можно убрать?
+import { DELAY_IN_MS } from "../../constants/delays";
 import { delay } from "../../utils/utils";
 import { swapItems } from "../../utils/utils";
 
@@ -28,41 +28,26 @@ export const StringComponent: React.FC = () => {
     e: FormEvent<HTMLFormElement> | FormEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
-    const word = string
+    const arr = string
       .split("")
-      .map((value) => ({ value, color: ElementStates.Default }));
-    // setString("");
-    // setCircles([...word]);
-    // console.log("circles0", circles);
-    // console.log("word0", word);
-    reverseString(word);
+      .map((value) => ({ value: value, color: ElementStates.Default }));
+    setCircles(arr);
+    reverseString(arr);
   };
 
-  const reverseString = async (word: TCircleItem[]) => {
+  const reverseString = async (arr: TCircleItem[]) => {
     setLoading(true);
-    // console.log("circles1", circles);
-    // await delay(DELAY_IN_MS);
-    setCircles([...word]);
-    await delay(DELAY_IN_MS);
-    // console.log("circles2", circles);
-    // console.log("word", word);
-    for (
-      let arr = circles, start = 0, end = circles.length - 1;
-      end >= start;
-      start++, end--
-    ) {
-      arr[start].color = ElementStates.Modified;
-      arr[end].color = ElementStates.Modified;
-      console.log(arr[start]);
-      setCircles([...arr]);
-      await delay(DELAY_IN_MS);
-      swapItems(arr, start, end);
+    let { length } = arr;
+    for (let start = 0, end = length - 1; end >= start; start++, end--) {
       arr[start].color = ElementStates.Changing;
       arr[end].color = ElementStates.Changing;
       setCircles([...arr]);
+      await delay(DELAY_IN_MS);
+      swapItems(arr, start, end);
+      arr[start].color = ElementStates.Modified;
+      arr[end].color = ElementStates.Modified;
+      setCircles([...arr]);
     }
-    //algorithm
-    // console.log(word);
     setLoading(false);
   };
   return (
@@ -78,18 +63,15 @@ export const StringComponent: React.FC = () => {
           <Button
             text="Развернуть"
             type="submit"
-            disabled={string.length > 0 ? false : true}
+            disabled={!(string.length > 0)}
             isLoader={loading}
           />
         </form>
         <div className={`${styles.decision}`}>
-          {circles.map((letter, index) => (
-            <Circle
-              letter={String(letter.value)}
-              key={index}
-              state={letter.color}
-            />
-          ))}
+          {circles &&
+            circles.map((letter, index) => (
+              <Circle letter={letter.value} key={index} state={letter.color} />
+            ))}
         </div>
       </section>
     </SolutionLayout>

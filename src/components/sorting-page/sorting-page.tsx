@@ -53,13 +53,14 @@ export const SortingPage: React.FC = () => {
   const onRadioInputClick = (
     e: FormEvent<HTMLFormElement> | FormEvent<HTMLInputElement>
   ) => {
+    //React.ChangeEvent как в string
     setRadioInputState(e.currentTarget.value);
   };
 
   const bubbleSort = async (sortType: string) => {
     setLoader([sortType === "ascending", sortType === "descending"]);
     let { length } = randomArray;
-    randomArray.forEach((el) => (el.color = ElementStates.Default));
+    randomArray.forEach((item) => (item.color = ElementStates.Default));
     await delay(DELAY_IN_MS);
     for (let i = 0; i < length; i++) {
       for (let j = 0; j < length - i - 1; j++) {
@@ -91,7 +92,7 @@ export const SortingPage: React.FC = () => {
   const selectionSort = async (sortType: string) => {
     setLoader([sortType === "ascending", sortType === "descending"]);
     let { length } = randomArray;
-    randomArray.forEach((el) => (el.color = ElementStates.Default));
+    randomArray.forEach((item) => (item.color = ElementStates.Default));
     await delay(DELAY_IN_MS);
     for (let i = 0; i < length - 1; i++) {
       let ind = i;

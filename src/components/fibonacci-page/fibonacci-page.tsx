@@ -5,6 +5,8 @@ import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
 import { fibonacciMax } from "../../constants/const";
+import { delay } from "../../utils/utils";
+import { DELAY_IN_MS } from "../../constants/delays";
 
 export const FibonacciPage: React.FC = () => {
   const [string, setString] = useState<string>(""); //может тут нужен кастомный хук?
@@ -18,10 +20,15 @@ export const FibonacciPage: React.FC = () => {
     e: FormEvent<HTMLFormElement> | FormEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
+    //вот сюда анимацию функцию
+    animationFib();
+  };
+  const animationFib = async () => {
     setLoading(true);
     for (let i: number = 0, arr = []; i <= Number(string); i++) {
       arr.push(String(fib(i + 1)));
       setFibs(arr);
+      await delay(DELAY_IN_MS);
     }
     setLoading(false);
   };
@@ -57,9 +64,10 @@ export const FibonacciPage: React.FC = () => {
         </form>
         <div className={`${styles.decision}`}>
           {/* //доделать гриды */}
-          {fibs.map((fib, index) => (
-            <Circle index={index} key={index} letter={fib} />
-          ))}
+          {fibs &&
+            fibs.map((fib, index) => (
+              <Circle index={index} key={index} letter={fib} />
+            ))}
         </div>
       </section>
     </SolutionLayout>
