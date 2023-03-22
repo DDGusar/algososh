@@ -59,6 +59,7 @@ export const StringComponent: React.FC = () => {
             maxLength={maxLength}
             extraClass={`${styles.input}`}
             onChange={onChange}
+            required
           />
           <Button
             text="Развернуть"

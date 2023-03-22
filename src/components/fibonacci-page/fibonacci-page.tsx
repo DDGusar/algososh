@@ -6,33 +6,35 @@ import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
 import { fibonacciMax } from "../../constants/const";
 import { delay } from "../../utils/utils";
-import { DELAY_IN_MS } from "../../constants/delays";
+import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 
 export const FibonacciPage: React.FC = () => {
-  const [string, setString] = useState<string>(""); //может тут нужен кастомный хук?
+  const [string, setString] = useState<string>("");
   const [fibs, setFibs] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  //validation 19 max
+  const [inputValidity, setInputValidity] = useState<boolean>(false);
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValidity(e.target.validity.valid);
     setString(e.target.value);
   };
   const onSubmit = (
     e: FormEvent<HTMLFormElement> | FormEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
-    //вот сюда анимацию функцию
     animationFib();
   };
+
   const animationFib = async () => {
     setLoading(true);
     for (let i: number = 0, arr = []; i <= Number(string); i++) {
       arr.push(String(fib(i + 1)));
-      setFibs(arr);
-      await delay(DELAY_IN_MS);
+      setFibs([...arr]);
+      await delay(SHORT_DELAY_IN_MS);
     }
     setLoading(false);
   };
-  //animation!!!
+
   const fib = (n: number, memo: Record<number, number> = {}): number => {
     if (n in memo) {
       return memo[n];
@@ -49,17 +51,20 @@ export const FibonacciPage: React.FC = () => {
       <section className={`${styles.content}`}>
         <form className={`${styles.task}`} onSubmit={onSubmit}>
           <Input
+            type="number"
+            min={0}
             max={fibonacciMax}
+            step={1}
             extraClass={`${styles.input}`}
             isLimitText
-            type="max"
             onChange={onChange}
+            required
           />
           <Button
             text="Рассчитать"
             type="submit"
             isLoader={loading}
-            disabled={string.length > 0 ? false : true}
+            disabled={!inputValidity}
           />
         </form>
         <div className={`${styles.decision}`}>
