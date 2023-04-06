@@ -18,10 +18,19 @@ export const StackPage: React.FC = () => {
   const [disabled, setDisabled] = useState<boolean>(true);
   const [string, setString] = useState<string>("");
   const [circles, setCircles] = useState<TItem[]>([]);
+  const [loadPush, setLoadPush] = useState<boolean>(false);
+  const [loadPop, setLoadPop] = useState<boolean>(false);
   //есть ли ограничение на длину стека
   const stack = React.useMemo(() => {
     return new Stack<TItem>();
   }, []);
+
+  const onSubmit = (
+    e: FormEvent<HTMLFormElement> | FormEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+    onClickPush(e);
+  };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setString(e.target.value);
@@ -30,6 +39,8 @@ export const StackPage: React.FC = () => {
   const onClickPush = async (
     e: FormEvent<HTMLFormElement> | FormEvent<HTMLButtonElement>
   ) => {
+    setLoadPush(true);
+    setDisabled(true);
     stack.push({ value: string, color: ElementStates.Default });
     setString("");
     const top = stack.peak();
@@ -44,18 +55,23 @@ export const StackPage: React.FC = () => {
     ]);
     await delay(SHORT_DELAY_IN_MS);
     setDisabled(false);
+    setLoadPush(false);
   };
 
   const onClickPop = async () => {
+    setLoadPop(true);
+    setDisabled(true);
     circles[circles.length - 1].color = ElementStates.Changing;
     setCircles([...circles]);
     await delay(SHORT_DELAY_IN_MS);
     stack.pop();
     setCircles([...stack.getItems()]);
     await delay(SHORT_DELAY_IN_MS);
+    setDisabled(false);
     if (stack.getSize() === 0) {
       setDisabled(true);
     }
+    setLoadPop(false);
   };
 
   const onClickClear = async () => {
@@ -63,14 +79,13 @@ export const StackPage: React.FC = () => {
       stack.pop();
     }
     setCircles([...stack.getItems()]);
-    await delay(SHORT_DELAY_IN_MS);
     setDisabled(true);
   };
 
   return (
     <SolutionLayout title="Стек">
       <section className={`${styles.content}`}>
-        <form className={`${styles.task}`}>
+        <form className={`${styles.task}`} onSubmit={onSubmit}>
           <Input
             value={string}
             extraClass={`${styles.input}`}
@@ -85,12 +100,14 @@ export const StackPage: React.FC = () => {
             type="button"
             disabled={!(string.length > 0)}
             onClick={onClickPush}
+            isLoader={loadPush}
           />
           <Button
             text="Удалить"
             type="button"
             disabled={disabled}
             onClick={onClickPop}
+            isLoader={loadPop}
           />
           <Button
             text="Очистить"

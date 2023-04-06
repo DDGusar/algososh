@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, FormEvent } from "react";
 import styles from "./queue-page.module.css";
 import { ElementStates } from "../../types/element-states";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
@@ -22,16 +22,26 @@ export const QueuePage: React.FC = () => {
   const [circles, setCircles] = useState<TItem[]>(
     Array(queueLength).fill({ value: "", color: ElementStates.Default })
   );
+  const [loadEnqueue, setLoadEnqueue] = useState<boolean>(false);
+  const [loadDequeue, setLoadDequeue] = useState<boolean>(false);
 
   const queue = React.useMemo(() => {
     return new Queue<TItem>(queueLength);
   }, []);
+
+  const onSubmit = (
+    e: FormEvent<HTMLFormElement> | FormEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+    onClickEnqueue();
+  };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setString(e.target.value);
   };
 
   const onClickEnqueue = async () => {
+    setLoadEnqueue(true);
     queue.enqueue({ value: string, color: ElementStates.Default });
     circles[queue.getTail() - 1] = {
       value: string,
@@ -47,9 +57,11 @@ export const QueuePage: React.FC = () => {
     setCircles([...circles]);
     await delay(SHORT_DELAY_IN_MS);
     setDisabled(false);
+    setLoadEnqueue(false);
   };
 
   const onClickDequeue = async () => {
+    setLoadDequeue(true);
     circles[queue.getHead()].color = ElementStates.Changing;
     setCircles([...circles]);
     await delay(SHORT_DELAY_IN_MS);
@@ -60,6 +72,7 @@ export const QueuePage: React.FC = () => {
     if (queue.isEmpty()) {
       setDisabled(true);
     }
+    setLoadDequeue(false);
   };
   const onClickClear = async () => {
     queue.clear();
@@ -71,7 +84,7 @@ export const QueuePage: React.FC = () => {
   return (
     <SolutionLayout title="Очередь">
       <section className={`${styles.content}`}>
-        <form className={`${styles.task}`}>
+        <form className={`${styles.task}`} onSubmit={onSubmit}>
           <Input
             value={string}
             extraClass={`${styles.input}`}
@@ -86,12 +99,14 @@ export const QueuePage: React.FC = () => {
             type="button"
             disabled={!(string.length > 0)}
             onClick={onClickEnqueue}
+            isLoader={loadEnqueue}
           />
           <Button
             text="Удалить"
             type="button"
             disabled={disabled}
             onClick={onClickDequeue}
+            isLoader={loadDequeue}
           />
           <Button
             text="Очистить"

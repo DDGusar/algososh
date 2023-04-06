@@ -23,6 +23,7 @@ export const FibonacciPage: React.FC = () => {
   ) => {
     e.preventDefault();
     animationFib();
+    setString("");
   };
 
   const animationFib = async () => {
@@ -55,6 +56,7 @@ export const FibonacciPage: React.FC = () => {
       <section className={`${styles.content}`}>
         <form className={`${styles.task}`} onSubmit={onSubmit}>
           <Input
+            value={string}
             type="number"
             min={0}
             max={fibonacciMax}

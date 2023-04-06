@@ -21,6 +21,12 @@ export const SortingPage: React.FC = () => {
   );
   const [radioInputState, setRadioInputState] = useState<string>("choice");
 
+  const onSubmit = (
+    e: FormEvent<HTMLFormElement> | FormEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+  };
+
   const onClickArray = (
     e: FormEvent<HTMLFormElement> | FormEvent<HTMLButtonElement>
   ) => {
@@ -124,7 +130,7 @@ export const SortingPage: React.FC = () => {
   return (
     <SolutionLayout title="Сортировка массива">
       <section className={`${styles.content}`}>
-        <form className={`${styles.task}`}>
+        <form className={`${styles.task}`} onSubmit={onSubmit}>
           <div className={`${styles.radioInputBox}`}>
             <RadioInput
               label="Выбор"

@@ -33,6 +33,7 @@ export const StringComponent: React.FC = () => {
       .map((value) => ({ value: value, color: ElementStates.Default }));
     setCircles(arr);
     reverseString(arr);
+    setString("");
   };
 
   const reverseString = async (arr: TCircleItem[]) => {
@@ -55,6 +56,7 @@ export const StringComponent: React.FC = () => {
       <section className={`${styles.content}`}>
         <form className={`${styles.task}`} onSubmit={onSubmit}>
           <Input
+            value={string}
             isLimitText
             maxLength={maxLength}
             extraClass={`${styles.input}`}

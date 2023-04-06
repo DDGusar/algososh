@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, FormEvent } from "react";
 import styles from "./list-page.module.css";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Input } from "../ui/input/input";
@@ -44,6 +44,12 @@ export const ListPage: React.FC = () => {
   const linkedList = React.useMemo(() => {
     return new LinkedList<string>(["11", "26", "23", "8"]);
   }, []);
+
+  const onSubmit = (
+    e: FormEvent<HTMLFormElement> | FormEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+  };
 
   const onValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -218,7 +224,7 @@ export const ListPage: React.FC = () => {
   return (
     <SolutionLayout title="Связный список">
       <section className={`${styles.content}`}>
-        <form className={`${styles.task}`}>
+        <form className={`${styles.task}`} onSubmit={onSubmit}>
           <Input
             value={value}
             extraClass={`${styles.input}`}
@@ -265,7 +271,7 @@ export const ListPage: React.FC = () => {
             isLoader={loadDeleteTail}
           />
         </form>
-        <form className={`${styles.task}`}>
+        <form className={`${styles.task}`} onSubmit={onSubmit}>
           <Input
             value={index ? `${index}` : ""}
             extraClass={`${styles.input}`}
