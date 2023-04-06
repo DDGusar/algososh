@@ -28,21 +28,25 @@ export const FibonacciPage: React.FC = () => {
   const animationFib = async () => {
     setLoading(true);
     for (let i: number = 0, arr = []; i <= Number(string); i++) {
-      arr.push(String(fib(i + 1)));
+      arr.push(String(getFibonacciNumbers(i + 1)));
       setFibs([...arr]);
       await delay(SHORT_DELAY_IN_MS);
     }
     setLoading(false);
   };
 
-  const fib = (n: number, memo: Record<number, number> = {}): number => {
+  const getFibonacciNumbers = (
+    n: number,
+    memo: Record<number, number> = {}
+  ): number => {
     if (n in memo) {
       return memo[n];
     }
     if (n <= 2) {
       return 1;
     }
-    memo[n] = fib(n - 1, memo) + fib(n - 2, memo);
+    memo[n] =
+      getFibonacciNumbers(n - 1, memo) + getFibonacciNumbers(n - 2, memo);
     return memo[n];
   };
 
@@ -68,7 +72,6 @@ export const FibonacciPage: React.FC = () => {
           />
         </form>
         <div className={`${styles.decision}`}>
-          {/* //доделать гриды */}
           {fibs &&
             fibs.map((fib, index) => (
               <Circle index={index} key={index} letter={fib} />

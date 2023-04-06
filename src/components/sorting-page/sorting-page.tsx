@@ -53,7 +53,6 @@ export const SortingPage: React.FC = () => {
   const onRadioInputClick = (
     e: FormEvent<HTMLFormElement> | FormEvent<HTMLInputElement>
   ) => {
-    //React.ChangeEvent как в string
     setRadioInputState(e.currentTarget.value);
   };
 
