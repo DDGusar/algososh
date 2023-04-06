@@ -79,6 +79,7 @@ export const QueuePage: React.FC = () => {
     setCircles(
       Array(queueLength).fill({ value: "", color: ElementStates.Default })
     );
+    setDisabled(true);
   };
 
   return (
