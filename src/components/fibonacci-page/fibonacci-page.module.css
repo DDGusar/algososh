@@ -1,0 +1,21 @@
+.content {
+  display: grid;
+  grid-template-rows: min-content 1fr;
+  gap: 48px;
+}
+.task {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+.input {
+  max-width: 377px;
+}
+.decision {
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(10, minmax(min-content, max-content));
+  row-gap: 78px;
+  justify-items: center;
+  column-gap: 16px;
+}

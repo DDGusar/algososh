@@ -1,0 +1,28 @@
+.content {
+  display: grid;
+  grid-template-rows: min-content 1fr;
+  gap: 48px;
+}
+.task {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  align-items: center;
+}
+.newArrowButton {
+  margin-left: 68px;
+  min-width: 205px;
+}
+.radioInputBox {
+  display: flex;
+}
+.columns {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 342px;
+}
+.button {
+  min-width: 205px;
+}
