@@ -56,6 +56,7 @@ export const FibonacciPage: React.FC = () => {
       <section className={`${styles.content}`}>
         <form className={`${styles.task}`} onSubmit={onSubmit}>
           <Input
+            data-testid="value"
             value={string}
             type="number"
             min={0}
@@ -67,6 +68,7 @@ export const FibonacciPage: React.FC = () => {
             required
           />
           <Button
+            data-testid="button"
             text="Рассчитать"
             type="submit"
             isLoader={loading}

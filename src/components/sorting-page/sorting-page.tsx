@@ -133,6 +133,7 @@ export const SortingPage: React.FC = () => {
         <form className={`${styles.task}`} onSubmit={onSubmit}>
           <div className={`${styles.radioInputBox}`}>
             <RadioInput
+              data-testid="choice"
               label="Выбор"
               extraClass="mr-40"
               name="sort"
@@ -142,6 +143,7 @@ export const SortingPage: React.FC = () => {
               checked={radioInputState === "choice"}
             />
             <RadioInput
+              data-testid="bubble"
               label="Пузырёк"
               extraClass="mr-40"
               name="sort"
@@ -152,6 +154,7 @@ export const SortingPage: React.FC = () => {
             />
           </div>
           <Button
+            data-testid="ascending"
             extraClass={`${styles.button}`}
             text="По возрастанию"
             type="button"
@@ -161,6 +164,7 @@ export const SortingPage: React.FC = () => {
             onClick={onClickAscending}
           />
           <Button
+            data-testid="descending"
             extraClass={`${styles.button}`}
             text="По убыванию"
             type="button"
@@ -170,6 +174,7 @@ export const SortingPage: React.FC = () => {
             onClick={onClickDescending}
           />
           <Button
+            data-testid="newArr"
             text="Новый массив"
             type="button"
             extraClass={`${styles.newArrowButton}`}
@@ -177,7 +182,7 @@ export const SortingPage: React.FC = () => {
             onClick={onClickArray}
           />
         </form>
-        <div className={`${styles.columns}`}>
+        <div data-testid="column" className={`${styles.columns}`}>
           {randomArray &&
             randomArray.map((item, index) => (
               <Column index={item.value} state={item.color} key={index} />

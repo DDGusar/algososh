@@ -87,6 +87,7 @@ export const StackPage: React.FC = () => {
       <section className={`${styles.content}`}>
         <form className={`${styles.task}`} onSubmit={onSubmit}>
           <Input
+            data-testid="value"
             value={string}
             extraClass={`${styles.input}`}
             isLimitText
@@ -96,6 +97,7 @@ export const StackPage: React.FC = () => {
             required
           />
           <Button
+            data-testid="push"
             text="Добавить"
             type="button"
             disabled={!(string.length > 0)}
@@ -103,6 +105,7 @@ export const StackPage: React.FC = () => {
             isLoader={loadPush}
           />
           <Button
+            data-testid="pop"
             text="Удалить"
             type="button"
             disabled={disabled}
@@ -110,6 +113,7 @@ export const StackPage: React.FC = () => {
             isLoader={loadPop}
           />
           <Button
+            data-testid="clear"
             text="Очистить"
             type="button"
             extraClass={`${styles.button_clean}`}
@@ -117,7 +121,7 @@ export const StackPage: React.FC = () => {
             onClick={onClickClear}
           />
         </form>
-        <div className={`${styles.decision}`}>
+        <div data-testid="stack" className={`${styles.decision}`}>
           {circles &&
             circles.map((letter, index) => (
               <Circle

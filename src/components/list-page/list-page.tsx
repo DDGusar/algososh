@@ -226,6 +226,7 @@ export const ListPage: React.FC = () => {
       <section className={`${styles.content}`}>
         <form className={`${styles.task}`} onSubmit={onSubmit}>
           <Input
+            data-testid="value"
             value={value}
             extraClass={`${styles.input}`}
             isLimitText
@@ -235,6 +236,7 @@ export const ListPage: React.FC = () => {
             required
           />
           <Button
+            data-testid="addHead"
             text="Добавить в head"
             type="button"
             linkedList="small"
@@ -245,6 +247,7 @@ export const ListPage: React.FC = () => {
             isLoader={loadAddHead}
           />
           <Button
+            data-testid="addTail"
             text="Добавить в tail"
             type="button"
             linkedList="small"
@@ -255,6 +258,7 @@ export const ListPage: React.FC = () => {
             isLoader={loadAddTail}
           />
           <Button
+            data-testid="delHead"
             text="Удалить из head"
             type="button"
             linkedList="small"
@@ -263,6 +267,7 @@ export const ListPage: React.FC = () => {
             isLoader={loadDeleteHead}
           />
           <Button
+            data-testid="delTail"
             text="Удалить из tail"
             type="button"
             linkedList="small"
@@ -273,6 +278,7 @@ export const ListPage: React.FC = () => {
         </form>
         <form className={`${styles.task}`} onSubmit={onSubmit}>
           <Input
+            data-testid="index"
             value={index ? `${index}` : ""}
             extraClass={`${styles.input}`}
             type="number"
@@ -280,6 +286,7 @@ export const ListPage: React.FC = () => {
             required
           />
           <Button
+            data-testid="addByIndex"
             text="Добавить по индексу"
             type="button"
             linkedList="big"
@@ -293,6 +300,7 @@ export const ListPage: React.FC = () => {
             isLoader={loadAddByIndex}
           />
           <Button
+            data-testid="delByIndex"
             text="Удалить по индексу"
             type="button"
             linkedList="big"
@@ -303,7 +311,7 @@ export const ListPage: React.FC = () => {
             isLoader={loadDeleteByIndex}
           />
         </form>
-        <div className={`${styles.decision}`}>
+        <div data-testid="list" className={`${styles.decision}`}>
           {list.map((item, index) => {
             return (
               <div className={`${styles.item}`} key={index}>
