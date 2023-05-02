@@ -1,15 +1,30 @@
+import {
+  VALUE,
+  INDEX,
+  ADD_HEAD,
+  DEL_HEAD,
+  ADD_TAIL,
+  DEL_TAIL,
+  ADD_BY_INDEX,
+  DEL_BY_INDEX,
+  CIRCLE,
+  HEAD,
+  TAIL,
+  BORDER_BLUE,
+} from "../../src/constants/test";
+
 describe("Проверка работы связного списка:", () => {
   const defaultList = [11, 26, 23, 8];
   beforeEach(() => {
-    cy.visit("http://localhost:3000/list");
-    cy.get('[data-testid="value"]').as("value");
-    cy.get('[data-testid="index"]').as("index");
-    cy.get('[data-testid="addHead"]').as("addHead");
-    cy.get('[data-testid="delHead"]').as("delHead");
-    cy.get('[data-testid="addTail"]').as("addTail");
-    cy.get('[data-testid="delTail"]').as("delTail");
-    cy.get('[data-testid="addByIndex"]').as("addByIndex");
-    cy.get('[data-testid="delByIndex"]').as("delByIndex");
+    cy.visit("list");
+    cy.get(VALUE).as("value");
+    cy.get(INDEX).as("index");
+    cy.get(ADD_HEAD).as("addHead");
+    cy.get(DEL_HEAD).as("delHead");
+    cy.get(ADD_TAIL).as("addTail");
+    cy.get(DEL_TAIL).as("delTail");
+    cy.get(ADD_BY_INDEX).as("addByIndex");
+    cy.get(DEL_BY_INDEX).as("delByIndex");
   });
   it("Кнопки добавления, добавления и удаления по индексу при пустом инпуте заблокированы", () => {
     cy.get("@value").should("have.value", "");
@@ -19,49 +34,49 @@ describe("Проверка работы связного списка:", () => {
     cy.get("@delByIndex").should("be.disabled");
   });
   it("Отрисовка списка при старте страницы", () => {
-    cy.get('[data-testid="circle"]').as("circles");
+    cy.get(CIRCLE).as("circles");
     cy.get("@circles").should("have.length", defaultList.length);
-    cy.get('[data-testid="head"]').as("heads");
+    cy.get(HEAD).as("heads");
     cy.get("@heads").eq(0).should("have.text", "head");
     for (let i = 0; i < defaultList.length; i++) {
       cy.get("@circles").should(($circle) => {
         expect($circle[i]).to.contain(defaultList[i]);
-        expect($circle[i]).to.have.css("border", "4px solid rgb(0, 50, 255)");
+        expect($circle[i]).to.have.css("border", BORDER_BLUE);
       });
     }
-    cy.get('[data-testid="tail"]').as("tails");
+    cy.get(TAIL).as("tails");
     cy.get("@tails").eq(3).should("have.text", "tail");
   });
   it("Добавление элемента в head", () => {
     cy.get("@value").type(4);
     cy.get("@addHead").should("be.not.disabled").click();
-    cy.get('[data-testid="circle"]').as("circles");
+    cy.get(CIRCLE).as("circles");
     cy.get("@circles").eq(0).should("have.text", "4");
     cy.wait(1000);
     cy.get("@circles").should("have.length", defaultList.length + 1);
-    cy.get('[data-testid="head"]').as("heads");
+    cy.get(HEAD).as("heads");
     cy.get("@heads").eq(0).should("have.text", "head");
     cy.get("@circles").eq(0).should("have.text", "4");
   });
   it("Добавление элемента в tail", () => {
     cy.get("@value").type(5);
     cy.get("@addTail").should("be.not.disabled").click();
-    cy.get('[data-testid="circle"]').as("circles");
+    cy.get(CIRCLE).as("circles");
     cy.get("@circles")
       .eq(defaultList.length - 1)
       .should("have.text", "5");
     cy.wait(1000);
     cy.get("@circles").should("have.length", defaultList.length + 1);
     cy.get("@circles").eq(4).should("have.text", "5");
-    cy.get('[data-testid="tail"]').as("tails");
+    cy.get(TAIL).as("tails");
     cy.get("@tails").eq(4).should("have.text", "tail");
   });
   it("Добавление элемента по индексу", () => {
     const index = 3;
     cy.get("@value").type(5);
-    cy.get("@index").type(index);
+    cy.get("@index").type(String(index));
     cy.get("@addByIndex").should("be.not.disabled").click();
-    cy.get('[data-testid="circle"]').as("circles");
+    cy.get(CIRCLE).as("circles");
     cy.wait(1000);
     cy.get("@circles")
       .eq(defaultList.length - 1)
@@ -72,7 +87,7 @@ describe("Проверка работы связного списка:", () => {
   });
   it("Удаление элемента из head", () => {
     cy.get("@delHead").should("be.not.disabled").click();
-    cy.get('[data-testid="circle"]').as("circles");
+    cy.get(CIRCLE).as("circles");
     cy.get("@circles").eq(0).should("have.text", "");
     cy.get("@circles").eq(1).should("have.text", "23");
     cy.wait(1000);
@@ -80,7 +95,7 @@ describe("Проверка работы связного списка:", () => {
   });
   it("Удаление элемента из tail", () => {
     cy.get("@delTail").should("be.not.disabled").click();
-    cy.get('[data-testid="circle"]').as("circles");
+    cy.get(CIRCLE).as("circles");
     cy.get("@circles")
       .eq(defaultList.length - 1)
       .should("have.text", "");
@@ -92,7 +107,7 @@ describe("Проверка работы связного списка:", () => {
     const index = 2;
     cy.get("@index").type(index);
     cy.get("@delByIndex").should("be.not.disabled").click();
-    cy.get('[data-testid="circle"]').as("circles");
+    cy.get(CIRCLE).as("circles");
     cy.wait(1000);
     cy.get("@circles").eq(2).should("have.text", "");
     cy.get("@circles")

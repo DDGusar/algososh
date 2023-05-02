@@ -11,7 +11,7 @@ describe("Корректно разворачивает строку: ", () => {
       </BrowserRouter>
     );
 
-    const string = screen.getByTestId("input");
+    const string = screen.getByTestId("value");
     const button = screen.getByTestId("button");
 
     const testStr = "qwerty";
@@ -42,7 +42,7 @@ describe("Корректно разворачивает строку: ", () => {
       </BrowserRouter>
     );
 
-    const string = screen.getByTestId("input");
+    const string = screen.getByTestId("value");
     const button = screen.getByTestId("button");
 
     const testStr = "qwertyuw";
@@ -73,7 +73,7 @@ describe("Корректно разворачивает строку: ", () => {
       </BrowserRouter>
     );
 
-    const string = screen.getByTestId("input");
+    const string = screen.getByTestId("value");
     const button = screen.getByTestId("button");
 
     const testStr = "q";
@@ -104,7 +104,7 @@ describe("Корректно разворачивает строку: ", () => {
       </BrowserRouter>
     );
 
-    const string = screen.getByTestId("input");
+    const string = screen.getByTestId("value");
     const button = screen.getByTestId("button");
 
     expect(string).toHaveValue("");

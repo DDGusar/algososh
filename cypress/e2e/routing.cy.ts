@@ -1,32 +1,32 @@
 describe("Доступные страницы:", () => {
   it("Строка", function () {
     cy.viewport(1440, 900);
-    cy.visit("http://localhost:3000/recursion");
+    cy.visit("recursion");
     cy.wait(1000);
   });
   it("Последовательность Фибоначчи", function () {
     cy.viewport(1440, 900);
-    cy.visit("http://localhost:3000/fibonacci");
+    cy.visit("fibonacci");
     cy.wait(1000);
   });
   it("Сортировка массива", function () {
     cy.viewport(1440, 900);
-    cy.visit("http://localhost:3000/sorting");
+    cy.visit("sorting");
     cy.wait(1000);
   });
   it("Стек", function () {
     cy.viewport(1440, 900);
-    cy.visit("http://localhost:3000/stack");
+    cy.visit("stack");
     cy.wait(1000);
   });
   it("Очередь", function () {
     cy.viewport(1440, 900);
-    cy.visit("http://localhost:3000/queue");
+    cy.visit("queue");
     cy.wait(1000);
   });
   it("Связный список", function () {
     cy.viewport(1440, 900);
-    cy.visit("http://localhost:3000/list");
+    cy.visit("list");
     cy.wait(1000);
   });
 });

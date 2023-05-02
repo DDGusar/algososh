@@ -57,7 +57,7 @@ export const StringComponent: React.FC = () => {
       <section className={`${styles.content}`}>
         <form className={`${styles.task}`} onSubmit={onSubmit}>
           <Input
-            data-testid="input"
+            data-testid="value"
             value={string}
             isLimitText
             maxLength={maxLength}
