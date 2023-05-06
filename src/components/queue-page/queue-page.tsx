@@ -87,6 +87,7 @@ export const QueuePage: React.FC = () => {
       <section className={`${styles.content}`}>
         <form className={`${styles.task}`} onSubmit={onSubmit}>
           <Input
+            data-testid="value"
             value={string}
             extraClass={`${styles.input}`}
             isLimitText
@@ -96,6 +97,7 @@ export const QueuePage: React.FC = () => {
             required
           />
           <Button
+            data-testid="add"
             text="Добавить"
             type="button"
             disabled={!(string.length > 0)}
@@ -103,6 +105,7 @@ export const QueuePage: React.FC = () => {
             isLoader={loadEnqueue}
           />
           <Button
+            data-testid="delete"
             text="Удалить"
             type="button"
             disabled={disabled}
@@ -110,6 +113,7 @@ export const QueuePage: React.FC = () => {
             isLoader={loadDequeue}
           />
           <Button
+            data-testid="clear"
             text="Очистить"
             type="button"
             extraClass={`${styles.button_clean}`}
@@ -117,7 +121,7 @@ export const QueuePage: React.FC = () => {
             onClick={onClickClear}
           />
         </form>
-        <div className={`${styles.decision}`}>
+        <div data-testid="queue" className={`${styles.decision}`}>
           {circles.map((item, index) => {
             return (
               <Circle

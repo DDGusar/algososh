@@ -6,8 +6,8 @@ import { RadioInput } from "../ui/radio-input/radio-input";
 import { Column } from "../ui/column/column";
 import { Direction } from "../../types/direction";
 import { ElementStates } from "../../types/element-states";
-import { swapItems, randomArr, delay } from "../../utils/utils";
-import { DELAY_IN_MS } from "../../constants/delays";
+import { randomArr } from "../../utils/utils";
+import { bubbleSort, selectionSort } from "./utils";
 
 export type TRandomArray = {
   value: number;
@@ -42,8 +42,8 @@ export const SortingPage: React.FC = () => {
     e.preventDefault();
 
     radioInputState === "choice"
-      ? selectionSort("descending")
-      : bubbleSort("descending");
+      ? selectionSort("descending", randomArray, setRandomArray, setLoader)
+      : bubbleSort("descending", randomArray, setRandomArray, setLoader);
   };
 
   const onClickAscending = (
@@ -52,8 +52,8 @@ export const SortingPage: React.FC = () => {
     e.preventDefault();
 
     radioInputState === "bubble"
-      ? bubbleSort("ascending")
-      : selectionSort("ascending");
+      ? bubbleSort("ascending", randomArray, setRandomArray, setLoader)
+      : selectionSort("ascending", randomArray, setRandomArray, setLoader);
   };
 
   const onRadioInputClick = (
@@ -62,77 +62,13 @@ export const SortingPage: React.FC = () => {
     setRadioInputState(e.currentTarget.value);
   };
 
-  const bubbleSort = async (sortType: string) => {
-    setLoader([sortType === "ascending", sortType === "descending"]);
-    let { length } = randomArray;
-    randomArray.forEach((item) => (item.color = ElementStates.Default));
-    await delay(DELAY_IN_MS);
-    for (let i = 0; i < length; i++) {
-      for (let j = 0; j < length - i - 1; j++) {
-        randomArray[j].color = ElementStates.Changing;
-        randomArray[j + 1].color = ElementStates.Changing;
-        setRandomArray([...randomArray]);
-        if (
-          sortType === "ascending"
-            ? randomArray[j].value > randomArray[j + 1].value
-            : randomArray[j].value < randomArray[j + 1].value
-        ) {
-          swapItems(randomArray, j, j + 1);
-        }
-        setRandomArray([...randomArray]);
-        await delay(DELAY_IN_MS);
-        randomArray[j].color = ElementStates.Default;
-        randomArray[j + 1].color = ElementStates.Default;
-
-        setRandomArray([...randomArray]);
-      }
-      randomArray[length - 1 - i].color = ElementStates.Modified;
-    }
-    randomArray[0].color = ElementStates.Modified;
-    randomArray[1].color = ElementStates.Modified;
-    setRandomArray([...randomArray]);
-    setLoader([false, false]);
-  };
-
-  const selectionSort = async (sortType: string) => {
-    setLoader([sortType === "ascending", sortType === "descending"]);
-    let { length } = randomArray;
-    randomArray.forEach((item) => (item.color = ElementStates.Default));
-    await delay(DELAY_IN_MS);
-    for (let i = 0; i < length - 1; i++) {
-      let ind = i;
-      randomArray[i].color = ElementStates.Changing;
-      setRandomArray([...randomArray]);
-      for (let j = i + 1; j < length; j++) {
-        randomArray[j].color = ElementStates.Changing;
-        setRandomArray([...randomArray]);
-        if (
-          sortType === "ascending"
-            ? randomArray[j].value < randomArray[ind].value
-            : randomArray[j].value > randomArray[ind].value
-        ) {
-          ind = j;
-        }
-        await delay(DELAY_IN_MS);
-        randomArray[j].color = ElementStates.Default;
-        setRandomArray([...randomArray]);
-      }
-      swapItems(randomArray, i, ind);
-      randomArray[ind].color = ElementStates.Default;
-      randomArray[i].color = ElementStates.Modified;
-      setRandomArray([...randomArray]);
-    }
-    randomArray[length - 1].color = ElementStates.Modified;
-    setRandomArray([...randomArray]);
-    setLoader([false, false]);
-  };
-
   return (
     <SolutionLayout title="Сортировка массива">
       <section className={`${styles.content}`}>
         <form className={`${styles.task}`} onSubmit={onSubmit}>
           <div className={`${styles.radioInputBox}`}>
             <RadioInput
+              data-testid="choice"
               label="Выбор"
               extraClass="mr-40"
               name="sort"
@@ -142,6 +78,7 @@ export const SortingPage: React.FC = () => {
               checked={radioInputState === "choice"}
             />
             <RadioInput
+              data-testid="bubble"
               label="Пузырёк"
               extraClass="mr-40"
               name="sort"
@@ -152,6 +89,7 @@ export const SortingPage: React.FC = () => {
             />
           </div>
           <Button
+            data-testid="ascending"
             extraClass={`${styles.button}`}
             text="По возрастанию"
             type="button"
@@ -161,6 +99,7 @@ export const SortingPage: React.FC = () => {
             onClick={onClickAscending}
           />
           <Button
+            data-testid="descending"
             extraClass={`${styles.button}`}
             text="По убыванию"
             type="button"
@@ -170,6 +109,7 @@ export const SortingPage: React.FC = () => {
             onClick={onClickDescending}
           />
           <Button
+            data-testid="newArr"
             text="Новый массив"
             type="button"
             extraClass={`${styles.newArrowButton}`}
@@ -177,7 +117,7 @@ export const SortingPage: React.FC = () => {
             onClick={onClickArray}
           />
         </form>
-        <div className={`${styles.columns}`}>
+        <div data-testid="column" className={`${styles.columns}`}>
           {randomArray &&
             randomArray.map((item, index) => (
               <Column index={item.value} state={item.color} key={index} />

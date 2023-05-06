@@ -39,6 +39,7 @@ export const StringComponent: React.FC = () => {
   const reverseString = async (arr: TCircleItem[]) => {
     setLoading(true);
     let { length } = arr;
+    await delay(DELAY_IN_MS);
     for (let start = 0, end = length - 1; end >= start; start++, end--) {
       arr[start].color = ElementStates.Changing;
       arr[end].color = ElementStates.Changing;
@@ -56,6 +57,7 @@ export const StringComponent: React.FC = () => {
       <section className={`${styles.content}`}>
         <form className={`${styles.task}`} onSubmit={onSubmit}>
           <Input
+            data-testid="value"
             value={string}
             isLimitText
             maxLength={maxLength}
@@ -64,6 +66,7 @@ export const StringComponent: React.FC = () => {
             required
           />
           <Button
+            data-testid="button"
             text="Развернуть"
             type="submit"
             disabled={!(string.length > 0)}
@@ -73,7 +76,12 @@ export const StringComponent: React.FC = () => {
         <div className={`${styles.decision}`}>
           {circles &&
             circles.map((letter, index) => (
-              <Circle letter={letter.value} key={index} state={letter.color} />
+              <Circle
+                data-testid="circle"
+                letter={letter.value}
+                key={index}
+                state={letter.color}
+              />
             ))}
         </div>
       </section>
